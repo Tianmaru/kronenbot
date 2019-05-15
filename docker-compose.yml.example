@@ -1,0 +1,12 @@
+version: '3'
+services:
+  kronenbot:
+    image: kronenbot:latest
+    environment:
+      RUVEN_BOT_TG_TOKEN: {{BOT_TOKEN}}
+      RUVEN_BOT_GROUP_ID: {{GROUP_ID}}
+    deploy:
+      restart_policy:
+        condition: on-failure
+      mode: replicated
+      replicas: 1

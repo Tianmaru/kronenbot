@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/python
+# -*- coding: utf8 -*-
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -33,7 +33,7 @@ if TELEGRAM_TOKEN == "":
         logger.error(
             "Telegram Token not provided. Ensure that your bot token is stored in RUVEN_BOT_TG_TOKEN"
             " or supplied as an argument.")
-    exit(-1)
+        exit(-1)
 
 if args.foogakbaz:
     FOOGAKBAZ_ID = args.foogakbaz
@@ -55,18 +55,22 @@ def error(update, context):
 
 def main():
     """Start the bot."""
+    logger.info('Starting the bot...')
     updater = Updater(token=TELEGRAM_TOKEN, use_context=True)
     updater.job_queue.run_daily(callback_moin, time(hour=8, minute=45), name='moin')
 
     # log all errors
+    logger.info('Adding error handler...')
     updater.dispatcher.add_error_handler(error)
 
     # Start the Bot
+    logger.info('Start polling...')
     updater.start_polling()
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
+    logger.info('Go into idle mode...')
     updater.idle()
 
 
