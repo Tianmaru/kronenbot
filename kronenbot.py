@@ -37,6 +37,8 @@ if TELEGRAM_TOKEN == "":
 
 if args.foogakbaz:
     FOOGAKBAZ_ID = args.foogakbaz
+elif "RUVEN_BOT_GROUP_ID" in os.environ:
+    FOOGAKBAZ_ID = os.environ["RUVEN_BOT_GROUP_ID"]
 else:
     logger.error("Foogakbaz id not provided.")
     exit(-1)
