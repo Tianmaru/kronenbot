@@ -3,7 +3,8 @@
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from datetime import time
+from pytz import timezone
+import datetime
 import logging
 import os
 import argparse
@@ -15,6 +16,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 MOIN = 'Einen wunderschönen guten Moin! Es ist dreiviertel neun, ich trinke meinen Kaffee am liebsten mit Milch und Zucker!'
+TIME = timezone('CET').localize(datetime.datetime.combine(datetime.datetime.today(), datetime.time(hour=8, minute=45))).astimezone().time()
+
 FOOGAKBAZ_ID = 0
 TELEGRAM_TOKEN = ""
 
@@ -57,7 +60,7 @@ def main():
     """Start the bot."""
     logger.info('Starting the bot...')
     updater = Updater(token=TELEGRAM_TOKEN, use_context=True)
-    updater.job_queue.run_daily(callback_moin, time(hour=8, minute=45), name='moin')
+    updater.job_queue.run_daily(callback_moin, TIME, name='moin')
 
     # log all errors
     logger.info('Adding error handler...')
