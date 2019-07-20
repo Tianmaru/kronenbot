@@ -8,6 +8,7 @@ import datetime
 import logging
 import os
 import argparse
+import random
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -17,6 +18,51 @@ logger = logging.getLogger(__name__)
 
 MOIN = 'Einen wunderschönen guten Moin! Es ist dreiviertel neun, ich trinke meinen Kaffee am liebsten mit Milch und Zucker!'
 TIME = timezone('CET').localize(datetime.datetime.combine(datetime.datetime.today(), datetime.time(hour=8, minute=45))).astimezone().time()
+LIFEHACK_TEMPLATE = "Und hier der Kaffee-Lifehack des Tages: *{}*\n\n{}"
+LIFEHACKS = [
+    ("Body-Scrub: Kaffee-Körperpeeling", "Mit Kaffeesatz kann die eigene Haut verwöhnt werden. Für das "
+                                         "Body-Scrub-Kaffee-Peeling benötigt man lediglich einen Esslöffel Kokosöl ("
+                                         "in Drogerien erhältlich) und einen Esslöffel Kaffeesatz. Gut vermischen "
+                                         "lassen sich diese zwei Zutaten in einer kleinen Schale – mit dem Gemisch "
+                                         "dann ein- bis zweimal pro Woche die Haut zu massieren. Dadurch wird sie auf "
+                                         "Dauer weich und gepflegt. Außerdem unterstützt das Koffein die Straffung "
+                                         "der Haut."),
+    ("Kühlschrankgeruch adé","Es stehen geruchsintensive Lebensmittel im Kühlschrank und der Geruch kommt einem jedes "
+                             "Mal entgegen sobald die Kühlschranktür geöffnet wird. Die Lösung: Einfach ein kleines "
+                             "Gefäß mit Kaffeesatz über Nacht im Kühlschrank platzieren. Schon sind die unangenehmen "
+                             "Gerüche verschwunden."),
+    ("Mülleimergeruch neutralisieren","Unschöne Gerüche können ebenfalls im Mülleimer entstehen. Daher leistet auch "
+                                      "hier der Kaffee Abhilfe. Den Abfall mit Kaffeesatz überstreuen und nach kurzer "
+                                      "Zeit ist der Müllgeruch verflogen."),
+    ("Gerüche aus Gefäßen entfernen", "Durch verschiedene Lebensmittel wie Käse, Knoblauch oder Zwiebeln bleiben "
+                                      "Gerüche an Gefäßen wie Schraubgläsern oder Plastikbehältern haften. Loswerden "
+                                      "kann man sie, indem Kaffeesatz über ein paar Tage verschlossen in den Gefäßen "
+                                      "aufbewahrt wird."),
+    ("Gewächse düngen", "Auch für das Düngen von Pflanzen kann man Kaffeesatz verwenden: Indem die Erde damit "
+                        "vermischt wird, reichert man sie mit zusätzlichen Nährstoffen an. Diese Art von Dünger "
+                        "eignet sich außerdem bei Einpflanzungen."),
+    ("Ameisen vertreiben", "Damit die kleinen Tierchen den Beeten fernbleiben, Kaffeesatz in Form eines Walles "
+                           "drumherum verteilen. Der neutralisierende Kaffee lässt die von Ameisen gelegten "
+                           "Duftspuren verschwinden. Somit wird man die Störenfriede ohne ein Giftmittel los."),
+    ("Geruchsblindheit nach Parfümtests bekämpfen", "Auf der Suche nach dem passenden Parfüm aus der eigenen Sammlung "
+                                                    "kann es schon mal zur Geruchsblindheit kommen. Damit man auch "
+                                                    "nach einigen Parfümtests weiterschnuppern kann, hilft es, "
+                                                    "am Kaffeesatz oder an Kaffeebohnen zu riechen. Danach lassen "
+                                                    "sich Gerüche direkt wieder wahrnehmen."),
+    ("Backen mit Kaffee", "Aufgegossener Kaffee eignet sich gut als Zutat, um Gebäcken wie Keksen oder Kuchen eine "
+                          "besondere Note zu verleihen. Besonders beliebt unter Kaffeegebäcken ist der "
+                          "Kaffee-Gugelhupf."),
+    ("Grill reinigen", "Gegrilltes hinterlässt meist Spuren auf dem Grillrost, die sich nur schwer beseitigen lassen. "
+                       "Für die umweltbewusste Säuberung nach dem Einweichen des Rosts anstelle von Scheuermilch "
+                       "Kaffeesatz auf den Schwamm geben. Dieser hat den gleichen Effekt wie Scheuermilch."),
+    ("Färben mit Kaffee", "Über versehentlich verschütteten Kaffee wird sich oft geärgert, denn er hinterlässt stark "
+                          "sichtbare Flecken. Doch diese eher ungewünschte Eigenschaft hat auch Vorteile: Den "
+                          "Kaffesatz im lauwarmen Wasser auflösen und beispielweise für das Färben von Stoffen, "
+                          "Ostereiern und Bastelpapier verwenden. Auch Kratzer in Holzmöbeln können mithilfe von "
+                          "Kaffee abgedeckt werden. Dafür den Kaffeesatz leicht befeuchten und vorsichtig auf die "
+                          "Kratzer auftragen."),
+    ("5 Kaffee-Lifehacks (Video)", "https://www.youtube.com/watch?v=u4lnjKviYyk")
+]
 
 FOOGAKBAZ_ID = 0
 TELEGRAM_TOKEN = ""
@@ -48,7 +94,10 @@ else:
 
 
 def callback_moin(context):
-    context.bot.send_message(chat_id=FOOGAKBAZ_ID, text=MOIN)
+    (lifehack_title, lifehack_text) = random.choice(LIFEHACKS)
+
+    message = MOIN + "\n\n" + LIFEHACK_TEMPLATE.format(lifehack_title, lifehack_text)
+    context.bot.send_message(chat_id=FOOGAKBAZ_ID, text=message, parse_mode="Markdown")
 
 
 def error(update, context):
