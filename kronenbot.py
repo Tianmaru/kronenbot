@@ -118,9 +118,11 @@ else:
 
 def callback_moin(context):
     (lifehack_title, lifehack_text) = random.choice(LIFEHACKS)
-
+    name1 = random.choice(FIRST_NAME)
+    name2 = random.choice(LAST_NAME_1)
+    name3 = random.choice(LAST_NAME_2)
     message = MOIN + "\n\n"
-    message += NAME_TEMPLATE.format(FIRST_NAME, LAST_NAME_1, LAST_NAME_2) + "\n\n"
+    message += NAME_TEMPLATE.format(name1, name2, name3) + "\n\n"
     message += LIFEHACK_TEMPLATE.format(lifehack_title, lifehack_text)
     context.bot.send_message(chat_id=FOOGAKBAZ_ID, text=message, parse_mode="Markdown")
 
