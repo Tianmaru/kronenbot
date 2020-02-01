@@ -16,8 +16,10 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-MOIN = 'Einen wunderschönen guten Moin! Es ist dreiviertel neun, ich trinke meinen Kaffee am liebsten mit Milch und Zucker!'
-TIME = timezone('CET').localize(datetime.datetime.combine(datetime.datetime.today(), datetime.time(hour=8, minute=45))).astimezone().time()
+MOIN = "Einen wunderschönen guten Moin! Es ist dreiviertel neun, ich trinke meinen Kaffee am liebsten mit Milch und " \
+       "Zucker!"
+TIME = timezone('CET').localize(
+    datetime.datetime.combine(datetime.datetime.today(), datetime.time(hour=8, minute=45))).astimezone().time()
 LIFEHACK_TEMPLATE = "Und hier der Kaffee-Lifehack des Tages: *{}*\n\n{}"
 LIFEHACKS = [
     ("Body-Scrub: Kaffee-Körperpeeling", "Mit Kaffeesatz kann die eigene Haut verwöhnt werden. Für das "
@@ -27,13 +29,13 @@ LIFEHACKS = [
                                          "dann ein- bis zweimal pro Woche die Haut zu massieren. Dadurch wird sie auf "
                                          "Dauer weich und gepflegt. Außerdem unterstützt das Koffein die Straffung "
                                          "der Haut."),
-    ("Kühlschrankgeruch adé","Es stehen geruchsintensive Lebensmittel im Kühlschrank und der Geruch kommt einem jedes "
-                             "Mal entgegen sobald die Kühlschranktür geöffnet wird. Die Lösung: Einfach ein kleines "
-                             "Gefäß mit Kaffeesatz über Nacht im Kühlschrank platzieren. Schon sind die unangenehmen "
-                             "Gerüche verschwunden."),
-    ("Mülleimergeruch neutralisieren","Unschöne Gerüche können ebenfalls im Mülleimer entstehen. Daher leistet auch "
-                                      "hier der Kaffee Abhilfe. Den Abfall mit Kaffeesatz überstreuen und nach kurzer "
-                                      "Zeit ist der Müllgeruch verflogen."),
+    ("Kühlschrankgeruch adé", "Es stehen geruchsintensive Lebensmittel im Kühlschrank und der Geruch kommt einem jedes "
+                              "Mal entgegen sobald die Kühlschranktür geöffnet wird. Die Lösung: Einfach ein kleines "
+                              "Gefäß mit Kaffeesatz über Nacht im Kühlschrank platzieren. Schon sind die unangenehmen "
+                              "Gerüche verschwunden."),
+    ("Mülleimergeruch neutralisieren", "Unschöne Gerüche können ebenfalls im Mülleimer entstehen. Daher leistet auch "
+                                       "hier der Kaffee Abhilfe. Den Abfall mit Kaffeesatz überstreuen und nach kurzer "
+                                       "Zeit ist der Müllgeruch verflogen."),
     ("Gerüche aus Gefäßen entfernen", "Durch verschiedene Lebensmittel wie Käse, Knoblauch oder Zwiebeln bleiben "
                                       "Gerüche an Gefäßen wie Schraubgläsern oder Plastikbehältern haften. Loswerden "
                                       "kann man sie, indem Kaffeesatz über ein paar Tage verschlossen in den Gefäßen "
@@ -61,8 +63,29 @@ LIFEHACKS = [
                           "Ostereiern und Bastelpapier verwenden. Auch Kratzer in Holzmöbeln können mithilfe von "
                           "Kaffee abgedeckt werden. Dafür den Kaffeesatz leicht befeuchten und vorsichtig auf die "
                           "Kratzer auftragen."),
-    ("5 Kaffee-Lifehacks (Video)", "https://www.youtube.com/watch?v=u4lnjKviYyk")
+    ("5 Kaffee-Lifehacks (Video)", "https://www.youtube.com/watch?v=u4lnjKviYyk"),
+    ("Haustierpflege",
+     "Vergessen Sie teure Mittel für die Pflege Ihrer Liebsten! Haben Hunde oder Katzen Flöhe, greifen Sie zum "
+     "Wundermittel Kaffee! Für den Hund empfiehlt sich dabei das Vermischen des Satzes mit Shampoo oder nur mit "
+     "Wasser. Dann Baden Sie Ihren treuen Freund ausgiebig damit und Sie werden sehen, der Hund ist und bleibt "
+     "Floh-Frei. Katzenliebhaber aufgepasst! Stellen Sie ein Glas Zitronensaft (oder andere Zitrusfrucht) vermischt "
+     "mit Kaffeesatz an die Orte, an denen sich ihr Stubentiger nach draußen und drinnen bewegt. Ungebetene Gäste im "
+     "Katzenfell werden bei dem starken Zitrus- und Kaffeegeruch gleich das Weite suchen."),
+    ("Holzböden reparieren",
+     "Immer wenn Sie an diesem hässlichen Kratzer in Ihrem Parkett vorbeigehen ärgern Sie sich grün und blau? Hier "
+     "kommt Abhilfe! Mischen Sie etwas warmes Wasser mit Kaffeesatz  und tragen es auf die Kratzer in Ihrem Holzboden "
+     "auf. Einwirken lassen, fertig! Kaffee wirkt als natürliches Färbemittel und kann nach einer kurzen Einwirkzeit "
+     "wieder entfernt werden."),
+    ("Trinken",
+     "Eine fromme Legende besagt, dass der islamische Prophet Mohammed die anregende Wirkung des Kaffees zuerst "
+     "entdeckt habe, nachdem ihm der Engel Gabriel eine Tasse heißer, dunkler Flüssigkeit dargeboten habe. Diese "
+     "verschwenderische Verwendung von Kaffee sollte aber nur im äußersten Notfall angewendet werden - kurz bevor er "
+     "schlecht wird.")
 ]
+NAME_TEMPLATE = "Mein heutiger Name ist *{} {}{}*."
+FIRST_NAME = ["Ruven", "Ruben", "Luven", "Risto", "Ruru"]
+LAST_NAME_1 = ["Kronen", "Kanonen", "Klonen", "Kloster", "Kamem", "Pylonen", "Dämonen"]
+LAST_NAME_2 = ["berg", "bert", "gert", "burg", "bart", "zerg"]
 
 FOOGAKBAZ_ID = 0
 TELEGRAM_TOKEN = ""
@@ -96,7 +119,9 @@ else:
 def callback_moin(context):
     (lifehack_title, lifehack_text) = random.choice(LIFEHACKS)
 
-    message = MOIN + "\n\n" + LIFEHACK_TEMPLATE.format(lifehack_title, lifehack_text)
+    message = MOIN + "\n\n"
+    message += NAME_TEMPLATE.format(FIRST_NAME, LAST_NAME_1, LAST_NAME_2) + "\n\n"
+    message += LIFEHACK_TEMPLATE.format(lifehack_title, lifehack_text)
     context.bot.send_message(chat_id=FOOGAKBAZ_ID, text=message, parse_mode="Markdown")
 
 
