@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-
 from telegram.ext import Updater
-from telegram.ext import CommandHandler
 from pytz import timezone
 import datetime
 import logging
 import os
 import argparse
 import random
+import requests
+import json
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -116,21 +116,47 @@ else:
     exit(-1)
 
 
+def get_trump_of_the_day():
+    resp = requests.get("https://www.tronalddump.io/random/quote")
+    parsed_json =json.loads(resp.text)
+
+    quote = parsed_json["value"]
+
+    return quote
+
+def get_advice():
+    resp = requests.get("https://api.adviceslip.com/advice")
+    parsed_json = json.loads(resp.text)
+
+    advice = parsed_json["slip"]["advice"]
+    return advice
+
+
 def callback_moin(context):
     (lifehack_title, lifehack_text) = random.choice(LIFEHACKS)
+    advice = get_advice()
+    trump = get_trump_of_the_day()
+
+    stuff = [
+        LIFEHACK_TEMPLATE.format(lifehack_title, lifehack_text),
+        "*Tagestip* \n\n{}".format(advice),
+        "*Trump des Tages* \n\n{}".format(trump)
+    ]
+
+    text = random.choice(stuff)
+
     name1 = random.choice(FIRST_NAME)
     name2 = random.choice(LAST_NAME_1)
     name3 = random.choice(LAST_NAME_2)
     message = MOIN + "\n\n"
     message += NAME_TEMPLATE.format(name1, name2, name3) + "\n\n"
-    message += LIFEHACK_TEMPLATE.format(lifehack_title, lifehack_text)
+    message += text
     context.bot.send_message(chat_id=FOOGAKBAZ_ID, text=message, parse_mode="Markdown")
 
 
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
-
 
 def main():
     """Start the bot."""
