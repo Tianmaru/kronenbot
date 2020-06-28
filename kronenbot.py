@@ -115,15 +115,6 @@ else:
     logger.error("Foogakbaz id not provided.")
     exit(-1)
 
-
-def get_trump_of_the_day():
-    resp = requests.get("https://www.tronalddump.io/random/quote")
-    parsed_json =json.loads(resp.text)
-
-    quote = parsed_json["value"]
-
-    return quote
-
 def get_advice():
     resp = requests.get("https://api.adviceslip.com/advice")
     parsed_json = json.loads(resp.text)
@@ -135,12 +126,10 @@ def get_advice():
 def callback_moin(context):
     (lifehack_title, lifehack_text) = random.choice(LIFEHACKS)
     advice = get_advice()
-    trump = get_trump_of_the_day()
 
     stuff = [
         LIFEHACK_TEMPLATE.format(lifehack_title, lifehack_text),
-        "*Tagestip* \n\n{}".format(advice),
-        "*Trump des Tages* \n\n{}".format(trump)
+        "*Tagestip* \n\n{}".format(advice)
     ]
 
     text = random.choice(stuff)
